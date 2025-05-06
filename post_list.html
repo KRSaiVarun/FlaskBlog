@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="mb-4">Latest Blog Posts</h1>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">{{ post.title }}</h2>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> {{ post.author }}</span>
+                            <span><i class="fas fa-calendar"></i> {{ post.created_date|date:"F d, Y" }}</span>
+                        </div>
+                        <p class="card-text">{{ post.content|truncatechars:200 }}</p>
+                        <div class="action-buttons">
+                            <a href="{% url 'post-detail' post.pk %}" class="btn btn-primary">
+                                <i class="fas fa-book-open"></i> Read More
+                            </a>
+                            <a href="{% url 'post-update' post.pk %}" class="btn btn-secondary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                No posts available yet. Be the first to create one!
+            </div>
+            <a href="{% url 'post-create' %}" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Create New Post
+            </a>
+        {% endif %}
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-tools me-2"></i>Actions</h3>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'post-create' %}" class="btn btn-success w-100 mb-3">
+                    <i class="fas fa-plus-circle me-2"></i> Create New Post
+                </a>
+                <p class="text-muted">Share your thoughts with the world by creating a new blog post!</p>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-info-circle me-2"></i>About</h3>
+            </div>
+            <div class="card-body">
+                <p>This is a simple blog application named FlaskBlog (built with Django). Feel free to create, edit, and share your posts!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

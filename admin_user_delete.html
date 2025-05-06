@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ user.username }} - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin-dashboard' %}">Admin Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'admin-user-detail' user.id %}">{{ user.username }}</a></li>
+                <li class="breadcrumb-item active">Delete User</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0 mb-5">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Delete User</h2>
+            </div>
+            <div class="card-body p-4 text-center">
+                <img src="{{ user.profile.profile_image }}" alt="{{ user.username }}'s profile" class="rounded-circle img-fluid mb-3" style="max-width: 100px;">
+                <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                <p class="text-muted">@{{ user.username }}</p>
+                
+                <div class="alert alert-warning my-4">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <strong>Warning:</strong> You are about to delete this user account permanently. This action cannot be undone.
+                    <ul class="text-start mt-2 mb-0">
+                        <li>All posts created by this user will be permanently deleted.</li>
+                        <li>All profile information will be lost.</li>
+                        <li>The user will no longer be able to log in.</li>
+                    </ul>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="{% url 'admin-user-detail' user.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Delete User
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

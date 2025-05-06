@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Post - FlaskBlog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Edit Post</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label") }}
+                        {% if form.title.errors %}
+                            {{ form.title(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.title.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.title(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.content.label(class="form-label") }}
+                        <div class="small text-muted mb-2">Markdown formatting is supported.</div>
+                        {% if form.content.errors %}
+                            {{ form.content(class="form-control is-invalid", id="content-editor", rows=10) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.content.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.content(class="form-control", id="content-editor", rows=10) }}
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                        <a href="{{ url_for('post', post_id=request.view_args['post_id']) }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const simplemde = new SimpleMDE({ 
+            element: document.getElementById("content-editor"),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: "edit-post-{{ request.view_args['post_id'] }}",
+                delay: 1000,
+            },
+        });
+    });
+</script>
+{% endblock %}
