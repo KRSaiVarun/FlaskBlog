@@ -69,13 +69,9 @@ cd FlaskBlog
 
 ### Step 2: Create Virtual Environment
 ```bash
-# On Windows
+# Only on Windows
 python -m venv venv
 venv\Scripts\activate
-
-# On macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
 ```
 
 ### Step 3: Install Dependencies
@@ -86,24 +82,11 @@ pip install -r requirements.txt
 ### Step 4: Environment Configuration
 Set required environment variables:
 
-**Windows (Command Prompt):**
-```cmd
-set SECRET_KEY=your_very_secret_key_here
-set FLASK_APP=run.py
-set FLASK_ENV=development
-```
-
-**macOS/Linux (Bash):**
-```bash
-export SECRET_KEY="your_very_secret_key_here"
-export FLASK_APP=run.py
-export FLASK_ENV=development
-```
 
 **Optional Email Configuration (for password resets):**
 ```bash
-export EMAIL_USER="your_email@gmail.com"
-export EMAIL_PASS="your_app_password"
+export EMAIL_USER="krsaivarun@gmail.com"
+export EMAIL_PASS="password"
 ```
 
 ### Step 5: Database Setup
