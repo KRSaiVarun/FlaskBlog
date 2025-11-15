@@ -61,6 +61,12 @@ python3 -m venv venv
 source venv/bin/activate
 
 pip install -r requirements.txt
+---
+
+
+Project Structure
+
+```bash
 
 FlaskBlog/
 ├── flaskblog/                 # Main application package
@@ -81,6 +87,7 @@ FlaskBlog/
 ---
 
 ### Key Highlights of this README:
+
 
 1.  **Professional Structure:** It follows the standard format of popular open-source projects.
 2.  **Clear Feature List:** Immediately tells a visitor what the project does.
