@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit {{ user.username }} - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin-dashboard' %}">Admin Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'admin-user-detail' user.id %}">{{ user.username }}</a></li>
+                <li class="breadcrumb-item active">Edit User</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg border-0 mb-5">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit User: {{ user.username }}</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                        <img src="{{ user.profile.profile_image }}" alt="{{ user.username }}'s profile" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                    </div>
+                    <div class="col-md-9">
+                        <h3>User Account</h3>
+                        <p class="text-muted">Update this user's information and profile settings</p>
+                    </div>
+                </div>
+                
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <h4><i class="fas fa-user me-2"></i>Account Information</h4>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ u_form.username.id_for_label }}" class="form-label fw-bold">Username</label>
+                                {{ u_form.username }}
+                                {% if u_form.username.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in u_form.username.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ u_form.email.id_for_label }}" class="form-label fw-bold">Email</label>
+                                {{ u_form.email }}
+                                {% if u_form.email.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in u_form.email.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ u_form.first_name.id_for_label }}" class="form-label fw-bold">First Name</label>
+                                {{ u_form.first_name }}
+                                {% if u_form.first_name.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in u_form.first_name.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ u_form.last_name.id_for_label }}" class="form-label fw-bold">Last Name</label>
+                                {{ u_form.last_name }}
+                                {% if u_form.last_name.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in u_form.last_name.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4><i class="fas fa-id-card me-2"></i>Profile Information</h4>
+                        <hr>
+                        
+                        <div class="mb-3">
+                            <label for="{{ p_form.profile_image.id_for_label }}" class="form-label fw-bold">Profile Image URL</label>
+                            {{ p_form.profile_image }}
+                            {% if p_form.profile_image.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in p_form.profile_image.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="text-muted">Enter the URL of an image to use as profile picture.</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ p_form.bio.id_for_label }}" class="form-label fw-bold">Bio</label>
+                            {{ p_form.bio }}
+                            {% if p_form.bio.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in p_form.bio.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <small class="text-muted">User's bio or description.</small>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ p_form.location.id_for_label }}" class="form-label fw-bold">Location</label>
+                                {{ p_form.location }}
+                                {% if p_form.location.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in p_form.location.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ p_form.birth_date.id_for_label }}" class="form-label fw-bold">Birth Date</label>
+                                {{ p_form.birth_date }}
+                                {% if p_form.birth_date.errors %}
+                                    <div class="text-danger mt-1">
+                                        {% for error in p_form.birth_date.errors %}
+                                            <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin" {% if user.profile.is_admin %}checked{% endif %}>
+                            <label class="form-check-label" for="is_admin">
+                                Admin privileges
+                            </label>
+                            <small class="form-text text-muted d-block">Admins can manage all users and posts.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'admin-user-detail' user.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to User Details
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

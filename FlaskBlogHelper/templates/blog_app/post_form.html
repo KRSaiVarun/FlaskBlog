@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit Post{% else %}Create New Post{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>
+                    <i class="fas {% if form.instance.pk %}fa-edit{% else %}fa-plus-circle{% endif %} me-2"></i>
+                    {% if form.instance.pk %}Edit Post{% else %}Create New Post{% endif %}
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" id="post-form" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger mt-2">
+                                    {% for error in field.errors %}
+                                        <small><i class="fas fa-exclamation-circle me-1"></i>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted mt-1"><i class="fas fa-info-circle me-1"></i>{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="d-flex mt-4 pt-3 border-top">
+                        <button type="submit" class="btn btn-success me-2">
+                            <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-paper-plane{% endif %} me-2"></i> 
+                            {% if form.instance.pk %}Update{% else %}Publish{% endif %} Post
+                        </button>
+                        <a href="{% url 'post-list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-lightbulb me-2"></i>Writing Tips</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex align-items-center py-3">
+                        <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                        <div>
+                            <strong>Compelling Title</strong>
+                            <p class="mb-0 text-muted">Use a clear and engaging title that captures attention.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center py-3">
+                        <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                        <div>
+                            <strong>Structured Content</strong>
+                            <p class="mb-0 text-muted">Organize your thoughts with paragraphs and headings.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center py-3">
+                        <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                        <div>
+                            <strong>Proofread</strong>
+                            <p class="mb-0 text-muted">Review for spelling, grammar, and clarity before publishing.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-keyboard me-2"></i>Formatting</h3>
+            </div>
+            <div class="card-body">
+                <p>You can use plain text or simple line breaks to format your content.</p>
+                <p>Leave an empty line between paragraphs for better readability.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Client-side validation with improved UX
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('post-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                let hasErrors = false;
+                const title = document.getElementById('id_title');
+                const author = document.getElementById('id_author');
+                const content = document.getElementById('id_content');
+                
+                if (!title || !author || !content) {
+                    return; // Form elements not found
+                }
+                
+                // Remove any previous error messages
+                document.querySelectorAll('.validation-error').forEach(el => el.remove());
+                
+                if (!title.value.trim()) {
+                    title.classList.add('is-invalid');
+                    addErrorMessage(title, 'Please enter a title for your post');
+                    hasErrors = true;
+                } else {
+                    title.classList.remove('is-invalid');
+                    title.classList.add('is-valid');
+                }
+                
+                if (!author.value.trim()) {
+                    author.classList.add('is-invalid');
+                    addErrorMessage(author, 'Please provide an author name');
+                    hasErrors = true;
+                } else {
+                    author.classList.remove('is-invalid');
+                    author.classList.add('is-valid');
+                }
+                
+                if (!content.value.trim()) {
+                    content.classList.add('is-invalid');
+                    addErrorMessage(content, 'Content cannot be empty');
+                    hasErrors = true;
+                } else if (content.value.trim().length < 10) {
+                    content.classList.add('is-invalid');
+                    addErrorMessage(content, 'Content is too short (minimum 10 characters)');
+                    hasErrors = true;
+                } else {
+                    content.classList.remove('is-invalid');
+                    content.classList.add('is-valid');
+                }
+                
+                if (hasErrors) {
+                    e.preventDefault();
+                    // Scroll to the first error
+                    const firstError = document.querySelector('.is-invalid');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        }
+        
+        // When form loads, add event listeners to form fields
+        const formFields = document.querySelectorAll('#post-form input, #post-form textarea');
+        formFields.forEach(field => {
+            field.addEventListener('focus', function() {
+                this.classList.remove('is-invalid');
+                const errorMsg = this.parentNode.querySelector('.validation-error');
+                if (errorMsg) {
+                    errorMsg.remove();
+                }
+            });
+        });
+    });
+    
+    function addErrorMessage(element, message) {
+        if (!element || !element.parentNode) return;
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'text-danger mt-2 validation-error';
+        errorDiv.innerHTML = `<small><i class="fas fa-exclamation-circle me-1"></i>${message}</small>`;
+        element.parentNode.appendChild(errorDiv);
+    }
+</script>
+{% endblock %}

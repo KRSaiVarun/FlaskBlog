@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }} Details - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin-dashboard' %}">Admin Dashboard</a></li>
+                <li class="breadcrumb-item active">User Details</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-user-circle me-2"></i>User Profile</h3>
+            </div>
+            <div class="card-body text-center p-4">
+                <img src="{{ user.profile.profile_image }}" alt="{{ user.username }}'s profile" class="rounded-circle img-fluid mb-3" style="max-width: 150px;">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                <p class="text-muted">@{{ user.username }}</p>
+                <p class="mb-1"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+                {% if user.profile.location %}
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>{{ user.profile.location }}</p>
+                {% endif %}
+                <p class="mb-1"><i class="fas fa-calendar-alt me-2"></i>Joined {{ user.profile.date_joined|date:"F d, Y" }}</p>
+                {% if user.profile.birth_date %}
+                    <p><i class="fas fa-birthday-cake me-2"></i>{{ user.profile.birth_date|date:"F d, Y" }}</p>
+                {% endif %}
+                
+                <div class="d-flex mt-4">
+                    <a href="{% url 'admin-user-edit' user.id %}" class="btn btn-outline-primary flex-grow-1 me-2">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </a>
+                    <a href="{% url 'admin-user-delete' user.id %}" class="btn btn-outline-danger flex-grow-1">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-id-card me-2"></i>About</h3>
+            </div>
+            <div class="card-body p-4">
+                {% if user.profile.bio %}
+                    {{ user.profile.bio }}
+                {% else %}
+                    <p class="text-muted fst-italic">No bio information provided.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="fas fa-blog me-2"></i>User's Posts</h3>
+                <span class="badge bg-light text-dark">{{ user_posts.count }} posts</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% if user_posts %}
+                        {% for post in user_posts %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">
+                                            <a href="{% url 'post-detail' post.pk %}" class="text-decoration-none">{{ post.title }}</a>
+                                            {% if post.status == 'draft' %}
+                                                <span class="badge bg-warning text-dark">Draft</span>
+                                            {% endif %}
+                                        </h5>
+                                        <p class="mb-1 text-muted small">
+                                            <i class="far fa-calendar me-1"></i>{{ post.created_date|date:"F d, Y" }}
+                                            {% if post.published_date %}
+                                                <span class="ms-2"><i class="fas fa-check-circle me-1"></i>Published on {{ post.published_date|date:"F d, Y" }}</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'admin-post-edit' post.pk %}" class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        {% if post.status == 'draft' %}
+                                            <a href="{% url 'admin-post-publish' post.pk %}" class="btn btn-sm btn-outline-success me-1">
+                                                <i class="fas fa-check"></i>
+                                            </a>
+                                        {% endif %}
+                                        <a href="{% url 'admin-post-delete' post.pk %}" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="list-group-item py-4 text-center">
+                            <p class="text-muted mb-0">This user hasn't created any posts yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

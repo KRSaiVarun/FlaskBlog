@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}About FlaskBlog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-info-circle me-2"></i>About FlaskBlog</h2>
+            </div>
+            <div class="card-body p-4">
+                <h3 class="mb-4">Welcome to FlaskBlog</h3>
+                
+                <div class="mb-4">
+                    <p>FlaskBlog is a simple yet powerful blogging platform that allows you to share your thoughts, ideas, and stories with the world. Despite its name, FlaskBlog is built with Django, a high-level Python web framework that encourages rapid development and clean, pragmatic design.</p>
+                </div>
+                
+                <h4 class="mb-3">Features</h4>
+                <div class="mb-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                            <div>
+                                <strong>Create and Edit Posts</strong>
+                                <p class="mb-0 text-muted">Easily create, edit, and delete your blog posts.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                            <div>
+                                <strong>Modern Design</strong>
+                                <p class="mb-0 text-muted">Clean and responsive design that looks great on all devices.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                            <div>
+                                <strong>User Authentication</strong>
+                                <p class="mb-0 text-muted">Secure login system to protect your content.</p>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center py-3">
+                            <i class="fas fa-check-circle text-success me-3 fs-4"></i>
+                            <div>
+                                <strong>Social Sharing</strong>
+                                <p class="mb-0 text-muted">Share your posts on popular social media platforms.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <h4 class="mb-3">Technology Stack</h4>
+                <div class="mb-4">
+                    <p>This blog is built with these technologies:</p>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-primary">Python</span>
+                        <span class="badge bg-success">Django</span>
+                        <span class="badge bg-secondary">Bootstrap 5</span>
+                        <span class="badge bg-info">SQLite</span>
+                        <span class="badge bg-warning text-dark">JavaScript</span>
+                        <span class="badge bg-danger">HTML5 & CSS3</span>
+                    </div>
+                </div>
+                
+                <h4 class="mb-3">Get Started</h4>
+                <div class="mb-4">
+                    <p>Ready to start blogging? Create your first post today!</p>
+                    <a href="{% url 'post-create' %}" class="btn btn-success">
+                        <i class="fas fa-plus-circle me-2"></i>Create New Post
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-question-circle me-2"></i>FAQs</h3>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="accordionFAQ">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Do I need an account to post?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Yes, you need to create an account and log in to create, edit, or delete posts.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Is it free to use?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Yes, FlaskBlog is completely free to use.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Can I customize my profile?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body">
+                                Yes, after logging in, you can edit your profile to customize your information.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-envelope me-2"></i>Contact Us</h3>
+            </div>
+            <div class="card-body">
+                <p>Have questions or feedback? We'd love to hear from you!</p>
+                <a href="mailto:contact@flaskblog.com" class="btn btn-primary w-100">
+                    <i class="fas fa-envelope me-2"></i>Email Us
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

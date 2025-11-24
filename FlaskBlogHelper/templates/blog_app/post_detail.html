@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <article class="blog-post">
+            <h1 class="mb-3">{{ post.title }}</h1>
+            <div class="post-meta mb-4">
+                <span><i class="fas fa-user"></i> {{ post.author }}</span>
+                <span><i class="fas fa-calendar"></i> {{ post.created_date|date:"F d, Y" }}</span>
+                {% if post.published_date %}
+                <span><i class="fas fa-check-circle"></i> Published: {{ post.published_date|date:"F d, Y" }}</span>
+                {% endif %}
+            </div>
+            <div class="blog-content">
+                {{ post.content|linebreaks }}
+            </div>
+            <div class="mt-5 pt-4 border-top">
+                <h4>Share this post</h4>
+                <div class="d-flex gap-2 mt-2">
+                    <a href="https://twitter.com/intent/tweet?text={{ post.title|urlencode }}" target="_blank" class="btn btn-outline-primary">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php" target="_blank" class="btn btn-outline-primary">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/" target="_blank" class="btn btn-outline-primary">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </article>
+        
+        <div class="action-buttons mt-4">
+            <a href="{% url 'post-update' post.pk %}" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i> Edit
+            </a>
+            <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger">
+                <i class="fas fa-trash me-1"></i> Delete
+            </a>
+            <a href="{% url 'post-list' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Back to Posts
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-tools me-2"></i>Actions</h3>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'post-update' post.pk %}" class="btn btn-primary w-100 mb-2">
+                    <i class="fas fa-edit me-2"></i> Edit Post
+                </a>
+                <a href="{% url 'post-delete' post.pk %}" class="btn btn-danger w-100 mb-2">
+                    <i class="fas fa-trash me-2"></i> Delete Post
+                </a>
+                <a href="{% url 'post-create' %}" class="btn btn-success w-100">
+                    <i class="fas fa-plus-circle me-2"></i> Create New Post
+                </a>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3><i class="fas fa-info-circle me-2"></i>About the Author</h3>
+            </div>
+            <div class="card-body">
+                <h4>{{ post.author }}</h4>
+                <p class="text-muted">Author of this wonderful blog post.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

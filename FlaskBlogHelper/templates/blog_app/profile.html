@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }} Profile - FlaskBlog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-user-circle me-2"></i>Profile</h3>
+            </div>
+            <div class="card-body text-center p-4">
+                <img src="{{ user.profile.profile_image }}" alt="{{ user.username }}'s profile" class="rounded-circle img-fluid mb-3" style="max-width: 150px;">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                <p class="text-muted">@{{ user.username }}</p>
+                <p class="mb-1"><i class="fas fa-envelope me-2"></i>{{ user.email }}</p>
+                {% if user.profile.location %}
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>{{ user.profile.location }}</p>
+                {% endif %}
+                <p class="mb-1"><i class="fas fa-calendar-alt me-2"></i>Joined {{ user.profile.date_joined|date:"F d, Y" }}</p>
+                {% if user.profile.birth_date %}
+                    <p><i class="fas fa-birthday-cake me-2"></i>{{ user.profile.birth_date|date:"F d, Y" }}</p>
+                {% endif %}
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{% url 'profile-update' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit me-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="fas fa-id-card me-2"></i>About</h3>
+            </div>
+            <div class="card-body p-4">
+                {% if user.profile.bio %}
+                    {{ user.profile.bio }}
+                {% else %}
+                    <p class="text-muted fst-italic">No bio information provided.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="fas fa-blog me-2"></i>My Posts</h3>
+                <a href="{% url 'post-create' %}" class="btn btn-light btn-sm">
+                    <i class="fas fa-plus me-1"></i>New Post
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% if user_posts %}
+                        {% for post in user_posts %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">
+                                            <a href="{% url 'post-detail' post.pk %}" class="text-decoration-none">{{ post.title }}</a>
+                                            {% if post.status == 'draft' %}
+                                                <span class="badge bg-warning text-dark">Draft</span>
+                                            {% endif %}
+                                        </h5>
+                                        <p class="mb-1 text-muted small">
+                                            <i class="far fa-calendar me-1"></i>{{ post.created_date|date:"F d, Y" }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <a href="{% url 'post-update' post.pk %}" class="btn btn-sm btn-outline-primary me-1">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'post-delete' post.pk %}" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="list-group-item py-4 text-center">
+                            <p class="text-muted mb-0">You haven't created any posts yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
